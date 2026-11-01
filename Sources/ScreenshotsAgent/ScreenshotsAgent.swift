@@ -58,7 +58,7 @@ public struct ScreenshotsAgent: GraniteAgentPackage {
         "into": "the folder for the images, relative to the project; Resources/Screenshots when left out",
     ]
     public static let guide = #"""
-        Tag screenshots for pictures of an app's screens: a design review, a README, the docs. It builds the iOS app by its scheme, launches it on a headless simulator (nothing opens on screen) once a destination with `-mock YES -destination <case>`, waits until the screen stops changing, and keeps it, in light and dark, with the status bar at 9:41. It writes Resources/Screenshots/<device>/<appearance>/<destination>.png, a labelled contact sheet (sheet.png) and a README.md table of every screen in that folder, so a call for one page refreshes it and keeps the rest. A first call builds the app (minutes); later calls build only what changed. It asks no model.
+        Tag screenshots for pictures of an app's screens: a design review, a README, the docs. Call it without building or reading the app first: it finds the scheme and the pages itself and names every picture it wrote. It builds the iOS app by its scheme, launches it on a headless simulator (nothing opens on screen) once a destination with `-mock YES -destination <case>`, waits until the screen stops changing, and keeps it, in light and dark, with the status bar at 9:41. It writes Resources/Screenshots/<device>/<appearance>/<destination>.png, a labelled contact sheet (sheet.png) and a README.md table of every screen in that folder, so a call for one page refreshes it and keeps the rest. A first call builds the app (minutes); later calls build only what changed. It asks no model.
 
         Every screen, on the newest iPhone and iPad: {}
 
