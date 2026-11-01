@@ -1,0 +1,9 @@
+{
+  "name": "Screenshots",
+  "tagline": "An app's screens captured on a headless simulator, on mock data, in light and dark, on iPhone and iPad.",
+  "category": "developer",
+  "keywords": ["screenshots", "simulator", "ios", "dark mode", "design review", "readme", "granite", "swiftui"],
+  "platforms": ["macOS 14"],
+  "license": "MIT",
+  "description": "An app's screens captured for design review and README media. Screenshots builds the iOS app by its scheme, launches it on a headless simulator once a destination with `-mock YES -destination <case>`, waits until each screen stops changing, and keeps it, in light and dark, on the newest iPhone and iPad, with the status bar at 9:41. Nothing opens on your screen.\n\nIt writes `Resources/Screenshots/<device>/<appearance>/<destination>.png`, a labelled contact sheet of every screen, and a README table of them for the docs. The pages are the cases of the app's `AppDestination`; a simulator it booted is shut down after, and one already running is left as it was found. The Mac app is captured too when you ask for it and the app may already record the screen.\n\nNo model is asked. A device or page that does not exist is refused with the reason, every one at once, and nothing is written.\n\nOne of the Rao Craft Agents: independent packages that, tagged in prompts along the life of a project, build an app of Loom's quality."
+}
