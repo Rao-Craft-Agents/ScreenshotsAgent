@@ -62,3 +62,34 @@ pinned in the code:
 ## Prompts run on this Mac
 
 None yet: prompts are run through Craft, with the agent installed from this repository, and logged here as they are.
+
+## Conformance on Hearth
+
+Level 1 of the regime: the call a model should write, sent straight to the installed runner over its wire
+(granite-agent/1) with no model, on a copy of Hearth as the journey left it (services, mock data and loom's views
+made), then checked by building, testing and screenshotting the app. A pass here means the agent can produce the
+result deterministically; whether Craft's model writes this call is tested by the prompts above.
+
+### Every page of Hearth on iPhone, light and dark
+
+*2026-11-01 · straight to the runner, no model*
+
+**The call**:
+
+```json
+{
+  "devices": [
+    "iPhone 18 Pro"
+  ],
+  "appearances": [
+    "light",
+    "dark"
+  ]
+}
+```
+
+**Checks**:
+- built and captured headless in 23 s; the 9:41 status bar replaced the simulator's own overrides
+
+![The contact sheet it wrote](Docs/Testing/l1-sheet.png)
+*The contact sheet it wrote*
