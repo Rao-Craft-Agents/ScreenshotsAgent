@@ -1,0 +1,19 @@
+{
+  "name": "Screenshots",
+  "tagline": "An app's screens captured on a headless simulator, on mock data, in light and dark, on iPhone and iPad.",
+  "category": "developer",
+  "keywords": [
+    "screenshots",
+    "simulator",
+    "ios",
+    "dark mode",
+    "design review",
+    "readme",
+    "granite",
+    "swiftui"
+  ],
+  "platforms": [
+    "macOS 14"
+  ],
+  "license": "MIT"
+}
