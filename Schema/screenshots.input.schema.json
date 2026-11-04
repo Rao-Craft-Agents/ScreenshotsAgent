@@ -1,0 +1,56 @@
+{
+  "$id" : "https://github.com/Rao-Craft-Agents/ScreenshotsAgent/blob/main/Schema/screenshots.input.schema.json",
+  "$schema" : "https://json-schema.org/draft/2020-12/schema",
+  "description" : "Every field a call to screenshots may give; `directory` is Craft's, never the model's.",
+  "properties" : {
+    "appearances" : {
+      "description" : "light, dark, or both; both when left out",
+      "items" : {
+        "enum" : [
+          "light",
+          "dark"
+        ],
+        "type" : "string"
+      },
+      "type" : "array"
+    },
+    "arguments" : {
+      "description" : "launch arguments every launch adds after `-mock YES -destination <case>`, such as `[\"-signedIn\", \"YES\"]`",
+      "items" : {
+        "type" : "string"
+      },
+      "type" : "array"
+    },
+    "destinations" : {
+      "description" : "the pages to open, as the app's AppDestination cases (`feed`, `settings`); every case when left out",
+      "items" : {
+        "type" : "string"
+      },
+      "type" : "array"
+    },
+    "devices" : {
+      "description" : "where to capture: simulator names like `iPhone 18 Pro`, or `iPhone` and `iPad` for the newest installed, and `Mac` for the Mac app (its window shows on this Mac while it is captured); the newest iPhone and iPad when left out",
+      "items" : {
+        "type" : "string"
+      },
+      "type" : "array"
+    },
+    "into" : {
+      "description" : "the folder for the images, relative to the project; Resources/Screenshots when left out",
+      "type" : "string"
+    },
+    "scheme" : {
+      "description" : "the scheme that builds the iOS app; the project's `<App>-iOS` when left out",
+      "type" : "string"
+    },
+    "settle" : {
+      "description" : "the most seconds to wait for a screen to stop changing before it is kept; 15 when left out",
+      "type" : "integer"
+    }
+  },
+  "required" : [
+
+  ],
+  "title" : "What screenshots takes (craft-agent/1)",
+  "type" : "object"
+}
