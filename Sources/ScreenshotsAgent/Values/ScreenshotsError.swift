@@ -1,7 +1,17 @@
 import Foundation
+import GraniteAgents
 
 /// What a call can say instead of capturing.
-public enum ScreenshotsError: Error, Equatable, CustomStringConvertible {
+public enum ScreenshotsError: Error, Equatable, CustomStringConvertible, AgentRefusing {
+    /// The call's to fix, a build that failed, or a device that would not capture.
+    public var refusal: AgentRefusal {
+        switch self {
+        case .refused(let problems): return AgentRefusal(.call, problems)
+        case .build: return AgentRefusal(.build, description)
+        case .device, .nothing: return AgentRefusal(.device, description)
+        }
+    }
+
     /// What is wrong with the call or the project, every problem at once: nothing was built, launched or written.
     case refused([String])
     /// The app did not build: the scheme, and the build's error lines.

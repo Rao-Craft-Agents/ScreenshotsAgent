@@ -5,6 +5,16 @@ import XCTest
 
 /// The package as an app finds it: by its record, with the schema a model is shown and the guide a host prompts with.
 final class ScreenshotsAgentTests: XCTestCase {
+    /// A refusal says whose it is: the call's, a build's, a device's; what it makes is a screen and a sheet.
+    func testARefusalSaysWhoseItIsAndWhatItMakes() {
+        XCTAssertEqual(ScreenshotsError.refused(["no scheme"]).refusal, AgentRefusal(.call, ["no scheme"]))
+        XCTAssertEqual(ScreenshotsError.build("Margin-iOS", "x.swift:1: error").refusal.kind, .build)
+        XCTAssertEqual(ScreenshotsError.device("boot", "timed out").refusal.kind, .device)
+        XCTAssertEqual(ScreenshotsError.nothing("every launch ended").refusal.kind, .device)
+        XCTAssertEqual(ScreenshotsAgent.makes.map(\.kind), ["screen", "sheet"])
+        XCTAssertEqual(AnyAgentPackage(ScreenshotsAgent.self).makes, ScreenshotsAgent.makes)
+    }
+
     func testTheRecordIsFoundWithNothingListed() throws {
         let screenshots = try XCTUnwrap(GraniteRoster.discovered().package("screenshots"), "the record is in this test binary")
         XCTAssertEqual(screenshots.module, "ScreenshotsAgent")

@@ -9,6 +9,7 @@
 //        images alone.
 
 import Foundation
+import GraniteAgents
 
 struct CaptureRun: Sendable {
     var commands: any CommandRunning = SystemCommands()
@@ -102,6 +103,7 @@ struct CaptureRun: Sendable {
             throw ScreenshotsError.nothing(error.description)
         }
         placed.append((from: sheet, to: plan.into.appendingPathComponent("sheet.png")))
+        let existed = Set(placed.map(\.to.path).filter { FileManager.default.fileExists(atPath: $0) })
         let destinations = ScreenshotsFolder.ordered(Self.unique(shown.map(\.destination)), by: plan.order)
         let readme = ScreenshotsReadme.text(app: plan.project.name, shots: shown, destinations: destinations, appearances: appearances, mock: plan.mock)
         let readmeChanged = previous != readme
@@ -112,8 +114,24 @@ struct CaptureRun: Sendable {
         }
         let written = try files.place(placed)
         note("wrote \(shots.count) screen\(shots.count == 1 ? "" : "s"), the contact sheet\(readmeChanged ? " and the README" : "") into \(files.relative(plan.into))")
-        return ScreenshotsResult(path: plan.into.appendingPathComponent("sheet.png").path, paths: written, devices: Self.unique(shots.map(\.device)),
-                                 appearances: plan.appearances, destinations: plan.destinations.map(\.name), screens: shots.count, notes: notes)
+        // What it planned, one screen a device, appearance and destination, and the sheet; what it captured of them.
+        func state(_ url: URL) -> AgentMade.State { existed.contains(url.path) ? .rewritten : .written }
+        let planned = plan.simulators.map(\.name) + (plan.mac ? ["Mac"] : [])
+        var expected = planned.flatMap { device in plan.appearances.flatMap { appearance in
+            plan.destinations.map { AgentExpected(kind: "screen", name: "\(device)/\(appearance.rawValue)/\($0.name)") } } }
+        expected.append(AgentExpected(kind: "sheet", name: "sheet"))
+        var made = shots.map { shot -> AgentMade in
+            let url = plan.into.appendingPathComponent(shot.relative)
+            return AgentMade(kind: "screen", name: "\(shot.device)/\(shot.appearance.rawValue)/\(shot.destination)", path: url.path, state: state(url))
+        }
+        let sheetURL = plan.into.appendingPathComponent("sheet.png")
+        made.append(AgentMade(kind: "sheet", name: "sheet", path: sheetURL.path, state: state(sheetURL)))
+        let skipped = notes.filter { $0.contains("was not captured") || $0.contains("did not settle") || $0.contains("left out") }
+            .map { AgentProblem(kind: "skipped", text: $0) }
+        let captured = ScreenshotsAppearance.allCases.filter { appearance in shots.contains { $0.appearance == appearance } }
+        return ScreenshotsResult(path: sheetURL.path, paths: written, devices: Self.unique(shots.map(\.device)),
+                                 appearances: captured, destinations: ScreenshotsFolder.ordered(Self.unique(shots.map(\.destination)), by: plan.order),
+                                 screens: shots.count, notes: notes, made: made, expected: expected, problems: skipped)
     }
 
     /// `values` each once, in the order they first come.

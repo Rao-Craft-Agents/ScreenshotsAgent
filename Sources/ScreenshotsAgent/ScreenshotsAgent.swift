@@ -46,6 +46,13 @@ public struct ScreenshotsAgent: GraniteAgentPackage {
     public typealias Compute = Void
 
     public static let word = "screenshots"
+    /// What it makes: pictures of the app's screens, and the sheet that shows them together.
+    public static let makes = [
+        AgentMake(kind: "screen", what: "a picture of one of the app's screens on a simulator or the Mac, light or dark",
+                  into: ["Resources/Screenshots/*"], never: "code"),
+        AgentMake(kind: "sheet", what: "every screen captured on one labelled image, and the README that lists them",
+                  into: ["Resources/Screenshots/sheet.png", "Resources/Screenshots/README.md"]),
+    ]
     public static let summary = "captures an app's screens on a headless iOS simulator — every destination, on mock data, in light and dark, on an iPhone and an iPad — as PNGs, a labelled contact sheet and a README table."
     public static let lanes: Int? = 1
     public static let fields = [
